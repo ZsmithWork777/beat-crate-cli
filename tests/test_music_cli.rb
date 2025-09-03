@@ -23,7 +23,3 @@ class MusicAppTest < Minitest::Test
   end
 end
 
-# Explicit runner (works in every environment)
-if __FILE__ == $0
-  exit Minitest.run
-end

@@ -1,15 +1,17 @@
 class MusicApp
-  attr_accessor :current_song, :history
+  attr_reader :current_song, :history
 
   def initialize
-    @current_song = "No song playing"
-    @history      = []
+    @current_song = nil
+    @history = []
     puts "A new MusicApp is ready!"
   end
 
-  def play_song(song)
-    @current_song = song
-    @history << song
+  def play_song(title)
+    t = title.to_s.strip
+    return if t.empty?
+    @current_song = t
+    @history << @current_song
     puts "Now playing: #{@current_song}"
   end
 
@@ -23,7 +25,6 @@ class MusicApp
   end
 end
 
-# Run CLI only when executed directly
 if __FILE__ == $0
   app = MusicApp.new
   puts "Welcome to Music CLI! Type a song name, 'list', 'help', or 'quit'."
@@ -32,14 +33,15 @@ if __FILE__ == $0
     loop do
       print "> "
       input = STDIN.gets&.chomp
-      break if input.nil?           # Ctrl-D
+      break if input.nil?
+      cmd = input.strip
 
-      case input.strip
-      when "quit", "exit" then puts("Goodbye!"); break
+      case cmd.downcase
+      when "quit", "exit" then puts "Goodbye!"; break
       when "list"         then app.list_history
       when "help"         then puts "Commands: enter a song title, 'list', 'help', or 'quit'"
       when ""             then puts "(enter something or type 'quit')"
-      else                     app.play_song(input)
+      else                       app.play_song(cmd)
       end
     end
   rescue Interrupt
